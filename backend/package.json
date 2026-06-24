@@ -1,0 +1,10 @@
+{
+  "name": "stud-club-backend",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "echo \"Backend dev server will be added later\"",
+    "build": "echo \"Backend build will be added later\"",
+    "start": "echo \"Backend start will be added later\""
+  }
+}
