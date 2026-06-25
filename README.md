@@ -49,16 +49,27 @@ docker compose -f backend/docker-compose.yml up -d
 Перевірка:
 
 ```bash
-docker compose ps
+docker compose -f backend/docker-compose.yml ps
+```
+
+Міграції та початкові дані:
+
+```bash
+pnpm --filter stud-club-backend db:migrate
+pnpm --filter stud-club-backend db:seed
 ```
 
 ### 4. Backend
 
 ```bash
-pnpm --filter backend dev
+pnpm --filter stud-club-backend dev
 ```
 
 API буде доступний на `http://localhost:3000`.
+
+Swagger UI: `http://localhost:3000/docs`
+
+OpenAPI JSON: `http://localhost:3000/docs/json`
 
 ### 5. Frontend
 
