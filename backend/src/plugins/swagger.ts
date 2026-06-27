@@ -19,6 +19,10 @@ export default fp(async (fastify) => {
       tags: [
         { name: 'Auth', description: 'Автентифікація та сесії' },
         { name: 'Health', description: 'Перевірка стану сервісу' },
+        { name: 'Categories', description: 'Категорії публікацій' },
+        { name: 'Posts', description: 'Публікації та події' },
+        { name: 'Comments', description: 'Коментарі' },
+        { name: 'Likes', description: 'Лайки' },
       ],
       components: {
         securitySchemes: {
