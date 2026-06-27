@@ -74,7 +74,15 @@ OpenAPI JSON: `http://localhost:3000/docs/json`
 ### 5. Frontend
 
 ```bash
-pnpm --filter frontend dev
+pnpm --filter stud-club-frontend dev
 ```
 
 Додаток буде доступний на `http://localhost:5173`.
+
+Для локальної розробки в `frontend/.env` використовуйте:
+
+```env
+VITE_API_URL=/api
+```
+
+Vite проксуватиме запити на backend (`http://localhost:3000`).
