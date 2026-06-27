@@ -91,7 +91,7 @@ export async function categoriesRoutes(fastify: FastifyInstance) {
     {
       schema: {
         tags: ['Categories'],
-        summary: 'Видалити категорію (ADMIN)',
+        summary: 'Видалити категорію без публікацій (ADMIN)',
         security: [{ bearerAuth: [] }],
         params: z.toJSONSchema(idParamSchema, fastifyJsonSchemaOptions),
         response: {
@@ -99,6 +99,7 @@ export async function categoriesRoutes(fastify: FastifyInstance) {
           401: z.toJSONSchema(errorResponseSchema, fastifyJsonSchemaOptions),
           403: z.toJSONSchema(errorResponseSchema, fastifyJsonSchemaOptions),
           404: z.toJSONSchema(errorResponseSchema, fastifyJsonSchemaOptions),
+          409: z.toJSONSchema(errorResponseSchema, fastifyJsonSchemaOptions),
         },
       },
       preHandler: [fastify.authenticate, requireRole('ADMIN')],

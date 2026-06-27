@@ -11,13 +11,13 @@ import { formatDate } from '@/shared/utils/format-date'
 export function PostPage() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { user } = useAuth()
+  const { user, isLoading: isAuthLoading } = useAuth()
   const [post, setPost] = useState<Post | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!id) {
+    if (!id || isAuthLoading) {
       return
     }
 
@@ -38,7 +38,7 @@ export function PostPage() {
     }
 
     void loadPost()
-  }, [id])
+  }, [id, isAuthLoading, user?.id])
 
   async function handleDelete() {
     if (!post || !window.confirm('Видалити цю публікацію?')) {

@@ -6,6 +6,7 @@ import { Textarea } from '@/components/ui/Textarea'
 import { categoriesApi } from '@/shared/api/categories-api'
 import { postsApi } from '@/shared/api/posts-api'
 import type { Category, PostType } from '@/shared/api/types'
+import { useAuth } from '@/shared/auth/auth-store'
 
 type PostFormProps = {
   mode: 'create' | 'edit'
@@ -21,6 +22,8 @@ type PostFormProps = {
 
 export function PostForm({ mode, postId, initialValues }: PostFormProps) {
   const navigate = useNavigate()
+  const { user } = useAuth()
+  const isAdmin = user?.role === 'ADMIN'
   const [categories, setCategories] = useState<Category[]>([])
   const [title, setTitle] = useState(initialValues?.title ?? '')
   const [content, setContent] = useState(initialValues?.content ?? '')
@@ -46,7 +49,13 @@ export function PostForm({ mode, postId, initialValues }: PostFormProps) {
     setIsSubmitting(true)
 
     try {
-      const payload = { title, content, imageUrl, type, categoryId }
+      const payload = {
+        title,
+        content,
+        imageUrl,
+        categoryId,
+        ...(isAdmin ? { type } : mode === 'create' ? { type: 'POST' as const } : {}),
+      }
 
       if (mode === 'create') {
         const { data } = await postsApi.create(payload)
@@ -99,18 +108,20 @@ export function PostForm({ mode, postId, initialValues }: PostFormProps) {
           />
         </label>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <label className="block space-y-1">
-            <span className="text-sm text-slate-600">Тип</span>
-            <select
-              value={type}
-              onChange={(event) => setType(event.target.value as PostType)}
-              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-            >
-              <option value="POST">Пост</option>
-              <option value="EVENT">Подія</option>
-            </select>
-          </label>
+        <div className={`grid gap-4 ${isAdmin ? 'sm:grid-cols-2' : ''}`}>
+          {isAdmin ? (
+            <label className="block space-y-1">
+              <span className="text-sm text-slate-600">Тип</span>
+              <select
+                value={type}
+                onChange={(event) => setType(event.target.value as PostType)}
+                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+              >
+                <option value="POST">Пост</option>
+                <option value="EVENT">Подія</option>
+              </select>
+            </label>
+          ) : null}
 
           <label className="block space-y-1">
             <span className="text-sm text-slate-600">Категорія</span>

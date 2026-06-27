@@ -25,7 +25,8 @@ export function BlogPage() {
   const filter = searchParams.get('filter') ?? 'all'
   const search = searchParams.get('search') ?? ''
 
-  const queryType: PostType | undefined = filter === EVENTS_FILTER ? 'EVENT' : 'POST'
+  const queryType: PostType | undefined =
+    filter === EVENTS_FILTER ? 'EVENT' : filter === 'all' ? undefined : 'POST'
   const categoryId = filter !== 'all' && filter !== EVENTS_FILTER ? filter : undefined
 
   const loadPosts = useCallback(async () => {

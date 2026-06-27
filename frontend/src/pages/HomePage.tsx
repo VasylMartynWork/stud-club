@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom'
 import { PostCard } from '@/components/PostCard'
 import { postsApi } from '@/shared/api/posts-api'
 import type { Post } from '@/shared/api/types'
+import { useAuth } from '@/shared/auth/auth-store'
 
 export function HomePage() {
+  const { isAuthenticated } = useAuth()
   const [events, setEvents] = useState<Post[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -38,12 +40,14 @@ export function HomePage() {
           >
             Перейти до блогу
           </Link>
-          <Link
-            to="/register"
-            className="rounded-md border border-white/40 px-4 py-2 text-sm font-medium text-white hover:bg-white/10"
-          >
-            Приєднатися
-          </Link>
+          {!isAuthenticated ? (
+            <Link
+              to="/register"
+              className="rounded-md border border-white/40 px-4 py-2 text-sm font-medium text-white hover:bg-white/10"
+            >
+              Приєднатися
+            </Link>
+          ) : null}
         </div>
       </section>
 

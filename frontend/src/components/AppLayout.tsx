@@ -51,6 +51,11 @@ export function AppLayout() {
                 Створити
               </NavLink>
             ) : null}
+            {user?.role === 'ADMIN' ? (
+              <NavLink to="/admin/categories" className={navLinkClass}>
+                Категорії
+              </NavLink>
+            ) : null}
           </nav>
 
           <div className="hidden items-center gap-3 sm:flex">

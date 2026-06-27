@@ -82,7 +82,7 @@ export async function postsRoutes(fastify: FastifyInstance) {
     },
     async (request, reply) => {
       const body = request.body as CreatePostInput
-      const post = await postsService.create(body, request.user.sub)
+      const post = await postsService.create(body, request.user.sub, request.user.role)
       return reply.status(201).send(post)
     },
   )

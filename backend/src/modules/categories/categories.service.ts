@@ -1,6 +1,6 @@
-import { asc, eq } from 'drizzle-orm'
+import { asc, count, eq } from 'drizzle-orm'
 import type { Database } from '../../db/client.js'
-import { categories } from '../../db/schema/index.js'
+import { categories, posts } from '../../db/schema/index.js'
 import { ConflictError, NotFoundError } from '../../shared/errors/app-error.js'
 import type { CreateCategoryInput, UpdateCategoryInput } from './categories.schemas.js'
 
@@ -63,6 +63,15 @@ export class CategoriesService {
 
     if (!category) {
       throw new NotFoundError('Category not found')
+    }
+
+    const [postsCountResult] = await this.db
+      .select({ total: count() })
+      .from(posts)
+      .where(eq(posts.categoryId, id))
+
+    if (Number(postsCountResult?.total ?? 0) > 0) {
+      throw new ConflictError('Cannot delete category with existing posts')
     }
 
     await this.db.delete(categories).where(eq(categories.id, id))

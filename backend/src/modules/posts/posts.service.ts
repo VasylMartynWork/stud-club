@@ -176,7 +176,17 @@ export class PostsService {
     return enriched
   }
 
-  async create(input: CreatePostInput, authorId: string) {
+  async create(
+    input: CreatePostInput,
+    authorId: string,
+    role: 'STUDENT' | 'ADMIN',
+  ) {
+    const postType = input.type ?? 'POST'
+
+    if (postType === 'EVENT' && role !== 'ADMIN') {
+      throw new ForbiddenError('Only admins can create event posts')
+    }
+
     const category = await this.db.query.categories.findFirst({
       where: eq(categories.id, input.categoryId),
     })
@@ -191,7 +201,7 @@ export class PostsService {
         title: input.title,
         content: input.content,
         imageUrl: input.imageUrl,
-        type: input.type ?? 'POST',
+        type: postType,
         categoryId: input.categoryId,
         authorId,
       })
@@ -215,6 +225,18 @@ export class PostsService {
 
     if (currentUser.role !== 'ADMIN' && post.authorId !== currentUser.id) {
       throw new ForbiddenError()
+    }
+
+    if (input.type !== undefined) {
+      const nextType = input.type
+
+      if (nextType === 'EVENT' && currentUser.role !== 'ADMIN') {
+        throw new ForbiddenError('Only admins can create event posts')
+      }
+
+      if (post.type === 'EVENT' && nextType !== 'EVENT' && currentUser.role !== 'ADMIN') {
+        throw new ForbiddenError('Only admins can change event post type')
+      }
     }
 
     if (input.categoryId) {

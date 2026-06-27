@@ -1,6 +1,6 @@
-import { useAuth } from '@/shared/auth/auth-store'
+import { useEffect, useState } from 'react'
 import { likesApi } from '@/shared/api/likes-api'
-import { useState } from 'react'
+import { useAuth } from '@/shared/auth/auth-store'
 
 type LikeButtonProps = {
   postId: string
@@ -19,6 +19,11 @@ export function LikeButton({
   const [likesCount, setLikesCount] = useState(initialLikesCount)
   const [likedByMe, setLikedByMe] = useState(initialLikedByMe)
   const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    setLikesCount(initialLikesCount)
+    setLikedByMe(initialLikedByMe)
+  }, [postId, initialLikesCount, initialLikedByMe])
 
   async function toggleLike() {
     if (!isAuthenticated) {

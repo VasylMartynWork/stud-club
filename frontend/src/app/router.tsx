@@ -1,6 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { AppLayout } from '@/components/AppLayout'
+import { AdminRoute } from '@/components/AdminRoute'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
+import { AdminCategoriesPage } from '@/pages/AdminCategoriesPage'
 import { BlogPage } from '@/pages/BlogPage'
 import { CreatePostPage } from '@/pages/CreatePostPage'
 import { EditPostPage } from '@/pages/EditPostPage'
@@ -24,6 +26,10 @@ export const router = createBrowserRouter([
           { path: 'posts/new', element: <CreatePostPage /> },
           { path: 'posts/:id/edit', element: <EditPostPage /> },
         ],
+      },
+      {
+        element: <AdminRoute />,
+        children: [{ path: 'admin/categories', element: <AdminCategoriesPage /> }],
       },
       { path: 'posts/:id', element: <PostPage /> },
     ],
