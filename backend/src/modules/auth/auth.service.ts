@@ -64,11 +64,17 @@ export class AuthService {
   }
 
   private async issueRefreshToken(user: User): Promise<string> {
-    return this.fastify.refreshJwtSign({
-      sub: user.id,
-      role: user.role,
-      type: 'refresh',
-    })
+    return this.fastify.jwt.sign(
+      {
+        sub: user.id,
+        role: user.role,
+        type: 'refresh',
+      },
+      {
+        key: env.JWT_REFRESH_SECRET,
+        expiresIn: env.JWT_REFRESH_EXPIRES_IN,
+      },
+    )
   }
 
   async register(input: RegisterInput): Promise<{ result: AuthResult; refreshToken: string }> {
@@ -137,7 +143,9 @@ export class AuthService {
     let payload: { sub: string; role: User['role']; type: string }
 
     try {
-      payload = await this.fastify.refreshJwtVerify(refreshToken)
+      payload = await this.fastify.jwt.verify(refreshToken, {
+        key: env.JWT_REFRESH_SECRET,
+      })
     } catch {
       throw new UnauthorizedError('Invalid or expired refresh token')
     }

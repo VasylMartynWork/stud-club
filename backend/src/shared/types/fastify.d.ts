@@ -11,8 +11,6 @@ declare module 'fastify' {
   interface FastifyInstance {
     db: Database
     authenticate: (request: FastifyRequest, reply: FastifyReply) => Promise<void>
-    refreshJwtSign: (payload: JwtPayload) => Promise<string>
-    refreshJwtVerify: <T = JwtPayload>(token: string) => Promise<T>
   }
 }
 
@@ -21,12 +19,12 @@ declare module '@fastify/jwt' {
     payload: {
       sub: string
       role: 'STUDENT' | 'ADMIN'
-      type: 'access'
+      type: 'access' | 'refresh'
     }
     user: {
       sub: string
       role: 'STUDENT' | 'ADMIN'
-      type: 'access'
+      type: 'access' | 'refresh'
     }
   }
 }

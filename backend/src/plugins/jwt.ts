@@ -11,14 +11,6 @@ export default fp(async (fastify) => {
     },
   })
 
-  await fastify.register(fjwt, {
-    secret: env.JWT_REFRESH_SECRET,
-    namespace: 'refresh',
-    sign: {
-      expiresIn: env.JWT_REFRESH_EXPIRES_IN,
-    },
-  })
-
   fastify.decorate('authenticate', async (request, _reply) => {
     try {
       await request.jwtVerify()
