@@ -13,10 +13,31 @@ export function AppLayout() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4">
-          <Link to="/" className="text-lg font-semibold">
-            Stud Club
-          </Link>
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center justify-between gap-4">
+            <Link to="/" className="text-lg font-semibold">
+              Stud Club
+            </Link>
+
+            <div className="flex items-center gap-2 sm:hidden">
+              {isAuthenticated ? (
+                <button
+                  type="button"
+                  onClick={() => void logout()}
+                  className="rounded-md border border-slate-300 px-3 py-2 text-sm hover:bg-slate-100"
+                >
+                  Вийти
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  className="rounded-md border border-slate-300 px-3 py-2 text-sm hover:bg-slate-100"
+                >
+                  Увійти
+                </Link>
+              )}
+            </div>
+          </div>
 
           <nav className="flex flex-wrap items-center gap-2">
             <NavLink to="/" className={navLinkClass} end>
@@ -25,12 +46,24 @@ export function AppLayout() {
             <NavLink to="/blog" className={navLinkClass}>
               Блог
             </NavLink>
+            {isAuthenticated ? (
+              <NavLink to="/posts/new" className={navLinkClass}>
+                Створити
+              </NavLink>
+            ) : null}
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="hidden items-center gap-3 sm:flex">
             {isAuthenticated ? (
               <>
-                <span className="hidden text-sm text-slate-600 sm:inline">{user?.name}</span>
+                <span className="hidden text-sm text-slate-600 sm:inline">
+                  {user?.name}
+                  {user?.role === 'ADMIN' ? (
+                    <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
+                      Адмін
+                    </span>
+                  ) : null}
+                </span>
                 <button
                   type="button"
                   onClick={() => void logout()}

@@ -1,5 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
 import { useAuth } from '@/shared/auth/auth-store'
 
 export function RegisterPage() {
@@ -31,39 +33,37 @@ export function RegisterPage() {
   }
 
   return (
-    <section className="mx-auto max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+    <section className="mx-auto max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
       <h1 className="text-2xl font-bold">Реєстрація</h1>
+      <p className="mt-2 text-sm text-slate-600">Створіть акаунт студента клубу.</p>
 
       <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
-        <label className="block">
-          <span className="mb-1 block text-sm text-slate-600">Ім&apos;я</span>
-          <input
+        <label className="block space-y-1">
+          <span className="text-sm text-slate-600">Ім&apos;я</span>
+          <Input
             type="text"
             value={name}
             onChange={(event) => setName(event.target.value)}
-            className="w-full rounded-md border border-slate-300 px-3 py-2"
             required
           />
         </label>
 
-        <label className="block">
-          <span className="mb-1 block text-sm text-slate-600">Email</span>
-          <input
+        <label className="block space-y-1">
+          <span className="text-sm text-slate-600">Email</span>
+          <Input
             type="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-            className="w-full rounded-md border border-slate-300 px-3 py-2"
             required
           />
         </label>
 
-        <label className="block">
-          <span className="mb-1 block text-sm text-slate-600">Пароль</span>
-          <input
+        <label className="block space-y-1">
+          <span className="text-sm text-slate-600">Пароль</span>
+          <Input
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
-            className="w-full rounded-md border border-slate-300 px-3 py-2"
             minLength={8}
             required
           />
@@ -71,13 +71,9 @@ export function RegisterPage() {
 
         {error ? <p className="text-sm text-red-600">{error}</p> : null}
 
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full rounded-md bg-slate-900 px-4 py-2 text-white hover:bg-slate-800 disabled:opacity-60"
-        >
+        <Button type="submit" disabled={isSubmitting} className="w-full">
           {isSubmitting ? 'Реєстрація...' : 'Зареєструватися'}
-        </button>
+        </Button>
       </form>
 
       <p className="mt-4 text-sm text-slate-600">

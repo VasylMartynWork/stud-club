@@ -1,6 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { AppLayout } from '@/components/AppLayout'
+import { ProtectedRoute } from '@/components/ProtectedRoute'
 import { BlogPage } from '@/pages/BlogPage'
+import { CreatePostPage } from '@/pages/CreatePostPage'
+import { EditPostPage } from '@/pages/EditPostPage'
 import { HomePage } from '@/pages/HomePage'
 import { LoginPage } from '@/pages/LoginPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
@@ -13,9 +16,16 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: 'blog', element: <BlogPage /> },
-      { path: 'posts/:id', element: <PostPage /> },
       { path: 'login', element: <LoginPage /> },
       { path: 'register', element: <RegisterPage /> },
+      {
+        element: <ProtectedRoute />,
+        children: [
+          { path: 'posts/new', element: <CreatePostPage /> },
+          { path: 'posts/:id/edit', element: <EditPostPage /> },
+        ],
+      },
+      { path: 'posts/:id', element: <PostPage /> },
     ],
   },
   { path: '*', element: <NotFoundPage /> },
